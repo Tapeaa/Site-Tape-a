@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suppression de données — TĀPE'A</title>
+  <link rel="icon" type="image/png" href="/tapea-icon.png">
+  <link rel="apple-touch-icon" href="/tapea-icon.png">
+  <meta name="theme-color" content="#1a1a2e">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="/app-logo.png" alt="Tape'a" class="nav-logo-img">
+        <span class="nav-logo-text">TĀPE'A</span>
+      </a>
+      <a href="/" class="nav-cta">Accueil</a>
+    </div>
+  </nav>
+
+  <!-- DELETE REQUEST -->
+  <section class="delete-section">
+    <div class="container">
+      <div class="delete-card">
+        <div class="delete-icon">🗑️</div>
+        <h1>Suppression de vos données</h1>
+        <p class="delete-description">
+          Vous pouvez demander la suppression partielle ou totale de vos données personnelles associées à votre compte TĀPE'A.
+          Renseignez votre numéro de téléphone utilisé lors de l'inscription et précisez votre demande si nécessaire.
+        </p>
+
+        <form id="delete-form" class="delete-form">
+          <div class="form-group">
+            <label for="phone">Numéro de téléphone *</label>
+            <input type="tel" id="phone" name="phone" placeholder="+689 87 12 34 56" required>
+          </div>
+          <div class="form-group">
+            <label for="message">Précisions (facultatif)</label>
+            <textarea id="message" name="message" rows="4" placeholder="Ex : Je souhaite supprimer toutes mes données personnelles et mon historique de courses."></textarea>
+          </div>
+          <button type="submit" class="delete-submit" id="submit-btn">Envoyer ma demande</button>
+        </form>
+
+        <div id="success-msg" class="success-message" style="display:none;">
+          <div class="success-icon">✅</div>
+          <h2>Demande envoyée</h2>
+          <p>Votre demande de suppression a bien été enregistrée. Nous la traiterons dans un délai de 30 jours.</p>
+          <a href="/" class="back-link">Retour à l'accueil</a>
+        </div>
+
+        <div id="error-msg" class="error-message" style="display:none;">
+          <p>Une erreur est survenue. Veuillez réessayer ou nous contacter à <strong>tapea.pf@gmail.com</strong>.</p>
+        </div>
+
+        <p class="delete-note">
+          Conformément à la réglementation, votre demande sera traitée sous 30 jours.
+          Pour toute question, contactez-nous à <a href="mailto:tapea.pf@gmail.com">tapea.pf@gmail.com</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="/tapea-icon.png" alt="Tape'a" class="footer-logo">
+          <span>TĀPE'A</span>
+        </div>
+        <p class="footer-copy">© 2026 TĀPE'A — Tous droits réservés · Papeete, Polynésie Française 🇵🇫</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("delete-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      var btn = document.getElementById("submit-btn");
+      btn.disabled = true;
+      btn.textContent = "Envoi en cours...";
+
+      var phone = document.getElementById("phone").value.trim();
+      var message = document.getElementById("message").value.trim();
+
+      try {
+        var res = await fetch("/api/delete-request", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone: phone, message: message })
+        });
+        if (res.ok) {
+          document.getElementById("delete-form").style.display = "none";
+          document.getElementById("success-msg").style.display = "block";
+          document.getElementById("error-msg").style.display = "none";
+        } else {
+          throw new Error("fail");
+        }
+      } catch(err) {
+        document.getElementById("error-msg").style.display = "block";
+        btn.disabled = false;
+        btn.textContent = "Envoyer ma demande";
+      }
+    });
+  </script>
+</body>
+</html>
