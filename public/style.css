@@ -127,7 +127,7 @@ body {
 }
 .phone-app-img {
   width: 100%; height: 100%;
-  object-fit: cover; border-radius: 40px;
+  object-fit: cover; border-radius: 36px;
   display: block;
   position: relative; z-index: 1;
 }
@@ -282,8 +282,8 @@ body {
 
   /* Logo central */
   .hero-visual { order: -1; margin-top: 10px; }
-  .phone-mockup { width: 180px; height: 180px; border-radius: 40px; padding: 18px; }
-  .phone-app-img { border-radius: 28px; }
+  .phone-mockup { width: 180px; height: 180px; border-radius: 40px; padding: 16px; }
+  .phone-app-img { border-radius: 26px; }
 
   /* Features : moins d'espace, cards plus petites */
   .features { padding: 40px 0 30px; }
